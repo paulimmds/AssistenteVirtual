@@ -1,0 +1,260 @@
+Requisitos do Bot:
+	- Manipular Membros
+		- Cadastrar Membro
+		- Deletar Membro
+		- Editar Informações de um Membro
+	- Manipular Contas
+		- Cadastrar um registro de Conta
+		- Deletar registro de Conta
+		- Editar registro de Conta
+	- Mensalidade
+		- Prover Mensalide de um Membro X
+		- Pagar Mensalidade
+	- Forms
+		- Cadastrar um Forms de pagamento
+		- Remover um Forms de Pagamento
+		- Editar um Forms de Pagamento
+
+
+Detalhamento de Requisitos :
+	- Cadastrar Membro:
+		informações ( 
+			CPF
+			NOME
+			TIPO_QUARTO -- Boolean(Compartilhado, Individual) Não Nulo Obrigatório 
+			    )
+	- Deletar Membro:
+		informações (
+			CPF_Membro
+			)
+	- Editar Membro:
+		informações (
+			CPF_Membro
+			Atributo a ser editado -- List(NOME, TIPO_QUARTO)
+			    )
+	- Cadastrar um Registro de Conta:
+		informações (
+			Data_Referencia
+			TIPO_CONTA
+			VALOR
+			    )
+	- Deletar Registro de Conta:
+		informações (
+			Data_Referencia
+			Tipo_Conta
+			    )
+	- Editar Registro de Conta :
+		informações (
+			Data_Referência
+			Tipo_Conta	
+			    )
+	- Prover Mensalide :
+		informações (
+			Data_Referência
+			Membro
+			Estado_de_Presença [ Boolean (0 : Em Sanca, 1 : Fora de Sanca ) ]
+			     )
+	- Pagar Mensalidade :
+		informações (
+			Membro
+			Data_Referência
+			Data_Pagamento
+			Valor
+			    )
+			    
+	- Criar um Forms de Pagamento :
+		informações (
+			ID_Forms
+			CPF_Membro
+			ID_Conta
+			Tipo_Forms [ List(mercado, gas, internet, cacau, gastos, aluguel, pagamentos) ]
+			Valor
+			    )
+	- Editar um Forms de Pagamento :
+		informações (
+			Id_Forms
+			Tipo_Forms
+			Valor
+			    )
+	- Remover um Forms de Pagamento :
+		informações (
+			Id_Forms
+			    )
+			    
+Use Cases :
+
+## 1
+	- User : /add_new_member
+	- Telegram : CPF
+	- User : 123.456.789.01
+	- Telegram : Nome
+	- User : Name
+	- Telegram : Tipo de Quarto [ boolean : Comp / Indiv ]
+	- User : Indiv
+	
+	Bot salva as variáveis.
+	Abre uma conexão com a BD.
+	Insere o registro na Entidade Membro.
+	Bot encerra a conexão com a BD.
+	
+	- Telegram : Cadastro Finalizado.
+	
+## 2
+	- User : /add_bill
+	- Telegram : Data de Referência
+	- User : 01/01/01
+	- Telegram : Tipo de Conta [ list : (Aluguel, Job, Caixa, Agua, Energia, Gas, Vivo, Poupanca, Cacau, Mercado, Outros Gastos, Descontos ]
+	- User : Select Choice
+	- Telegram : Valor
+	- User : 123.00
+	
+	Bot salva as variáveis
+	Bot abre uma conexão com a BD.
+	Bot insere o registro na Entidade Conta
+	BOt encerra a conexão com a BD
+	
+	- Telegram : Conta adicionada com sucesso
+
+## 3
+	- User : /mensality
+	- Telegram : Membro
+	- User : Name
+	- Telegram : Data_Referência
+	- User : 01/01/01
+	- Telegram : Estado de Presença [ Boolean : Em Sanca | Fora de Sanca ]
+	- User : Select option
+	
+	Bot salva as variáveis
+	Bot abre uma conexão com a BD
+	Bot Realiza o Cálculo da Mensalidade
+	Bot encerra a conexão com a BD
+	
+	- Telegram : Sua mensalidade para a seguinte data 01/01/01 é 123.00 
+	
+## 4
+	- User : /pay_mensality
+	- Telegram : Membro
+	- User : Name
+	- Telegram : Data de Referência
+	- User : 01/01/01
+	- Telegram : Data de Pagamento
+	- User : 01/01/01
+	- Telegram : Valor
+	- User : 123.00
+	- Telegram : Observação
+	- User : enviado pra conta do neto
+	
+	Bot salva as variáveis
+	Bot abre uma conexão com a BD.
+	Bot insere o registro na Entidade Mensalidade
+	Bot encerra a conexão com a BD.
+	
+	- Telegram : Registro inserido com sucesso.
+
+## 5
+	- User : /forms
+	- Telegram : Membro
+	- User : Name
+	- Telegram : Tipo de Conta [ list ]
+	- User : select choice
+	- Telegram : Data de Referência
+	- User : 01/01/01
+	- Telegram : Valor 
+	- User : 123.00
+	- Telegram : Data de Pagamento
+	- User : 01/01/01
+	
+	Bot salva as variáveis
+	Bot abre uma conexão com a BD.
+	Bot insere o registro na Entidade Forms
+	Bot encerra a conexão com a BD.
+	
+	- Telegram : Registro inserido com sucesso.
+	
+Base de Dados 'QDEZ' :
+
+	Entidade MEMBRO (
+		CPF_Membro [ Varchar(12) Primary Key Not Null ],
+		Nome [ Varchar(32) Not Null ],
+		Tipo_Quarto [ Boolean (0 : Compartilhado , 1 : Individual) ] 
+		Estado_Presenca [ Boolean (0 : Fora de Sanca , 1 : Em Sanca) ]
+			)
+
+	Entidade CONTA (
+		ID_Conta [ smallInt Primary Key Not Null Auto Increment]
+		Data [ Date Not Null ],
+		Aluguel  [ Decimal(6,2) ],
+		Job  [ Decimal(6,2) ],
+		Caixa  [ Decimal(6,2) ],
+		Agua  [ Decimal(6,2) ],
+		Energia  [ Decimal(6,2) ],
+		Gas  [ Decimal(6,2) ],
+		Vivo  [ Decimal(6,2) ],
+		Poupanca  [ Decimal(6,2) ],
+		Cacau  [ Decimal(6,2) ],
+		Descontos [ Decimal(6,2) ]
+		)
+	
+	Entidade MERCADO (
+		ID_Mercado [ SmallInt Primary Key Not Null Auto Increment ],
+		ID_Conta [Foreign Key Not Null ],
+		Descricao [ Varchar(100) ],
+		Valor [ Decimal (6,2) ]
+			  )
+		
+	Entidade OUTROS_GASTOS (
+		ID_OutrosGastos [ SmallInt Primary Key Not Null Auto Increment ],
+		ID_Conta [ Foreign Key Not Null ],
+		Valor [ Decimal (6,2) ],
+		Descricao [ Varchar(100) ] 
+				)
+	
+	Entidade DESCONTOS (
+		ID_Desconto [ SmallInt Primary Key Not Null Auto Increment ],
+		ID_Conta [ Foreign Key Not Null ],
+		Valor [ Decimal (6,2) ],
+		Descricao [ Varchar(100) ] 
+			    )
+	
+	Entidade MENSALIDADE (
+		ID_Mensalidade [ smallInt Primary Key Not Null Auto Increment ],
+		ID_Conta [ Foreign Key Not Null ],
+		CPF_Membro [ Foreign Key Not Null ],
+		Data_Pagamento [ Date Not Null ],
+		Valor [ Decimal(6,2) Not Null ],
+		Observacao [ varChar(100) ]
+			     )
+	
+	Entidade FORMS (
+		ID_Forms [ smallInt Primary Key Not Null Auto Increment ],
+		CPF_Membro [ Varchar(12) ],
+		ID_Tipo [ smallInt Foreign Key ],
+		ID_Conta [ smallInt Foreign Key ],
+		Data_Pagamento [ Date ],
+		Valor [ Decimal(6,2) ] 
+		       )
+		       
+	Entidade TIPO_FORMS (
+		ID_Tipo [smallInt Primary Key Not Null Auto Increment ],
+		Tipo [ Varchar(20) ]
+		   )
+		   
+	Entidade VARIAVEL (
+		ID_Variavel [smallInt Primary Key Not Null Auto Increment ],
+		PQP_IND [Decimal(3,2)],
+		PQP_COMP [Decimal(3,2)],
+		MP_Aluguel [Decimal(3,2)],
+		MP_Job [Decimal(3,2)],
+		MP_Caixa [Decimal(3,2)],
+		MP_Agua [Decimal(3,2)],
+		MP_Energia [Decimal(3,2)],
+		MP_Gas [Decimal(3,2)],
+		MP_Mercado [Decimal(3,2)],
+		MP_Vivo [Decimal(3,2)],
+		MP_Poupanca [Decimal(3,2)],
+		MP_Cacau [Decimal(3,2)],
+		MP_OutrosGastos [Decimal(3,2)]
+			 )
+	 
+	     
+		
