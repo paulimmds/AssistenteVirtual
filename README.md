@@ -39,8 +39,8 @@ Administrar de forma centralizada o gerenciamento das contas da casa, formulári
 ## Product Backlog :
 	1- Base de Dados ✅ 
 	2- Cadastrar Membro ✅ 
-	3- Cadastrar um registro de Conta
-	4- Cadastrar um Forms
+	3- Cadastrar um registro de Conta ✅
+	4- Cadastrar um Forms ✅
 	5- Prover Mensalidade de um Membro X
 	6- Pagar Mensalidade
 	7- Deletar Membro

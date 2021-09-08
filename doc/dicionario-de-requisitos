@@ -21,7 +21,8 @@ Detalhamento de Requisitos :
 		informações ( 
 			CPF
 			NOME
-			TIPO_QUARTO -- Boolean(Compartilhado, Individual) Não Nulo Obrigatório 
+			TIPO_QUARTO -- Boolean(0: Compartilhado, 1: Individual) Não Nulo 
+			ESTADO_PRESENCA -- Boolean(0: Em Sanca, 1: Fora de Sanca) Não Nulo
 			    )
 	- Deletar Membro:
 		informações (
@@ -177,7 +178,7 @@ Base de Dados 'QDEZ' :
 		CPF_Membro [ Varchar(12) Primary Key Not Null ],
 		Nome [ Varchar(32) Not Null ],
 		Tipo_Quarto [ Boolean (0 : Compartilhado , 1 : Individual) ] 
-		Estado_Presenca [ Boolean (0 : Fora de Sanca , 1 : Em Sanca) ]
+		Estado_Presenca [ Boolean (0 : Em Sanca , 1 : Fora de Sanca) ]
 			)
 
 	Entidade CONTA (
